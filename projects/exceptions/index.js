@@ -151,7 +151,7 @@ function calculator(number = 0) {
 
   return args.reduce((all, current) => all / current, number);
  },
- nul(...args) {
+ mul(...args) {
   return args.reduce((all, current) => all * current, number);
  },
  }
