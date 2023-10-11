@@ -45,7 +45,7 @@ findSize(photo) {
       }
 
       return biggest;
-    } photo.sizes[0]);
+    }, photo.sizes[0]);
   }
 
   return size;
