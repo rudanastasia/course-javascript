@@ -1,99 +1,35 @@
-const PERM_FRIENDS = 2;
-const PERM_PHOTOS = 4;
-const APP_ID = 138184625;
+import model from './model';
 
 export default {
+  async getNextPhoto() {
+    const { friend, id, url } = await model.getNextPhoto();
+    this.setFriendAndPhoto(friend, id, url);
+  },
 
-login() {
-  return new Promise((resolve, reject) => {
-    VK.init({
-      apiId: APP_ID,
+  setFriendAndPhoto(friend, id, url) {
+    const photoComp = document.querySelector('.component-photo');
+    const headerPhotoComp = document.querySelector('.component-header-photo');
+    const headerNameComp = document.querySelector('.component-header-name');
+
+    headerPhotoComp.style.backgroundImage = 'url("${friend.photo_50}")';
+    headerNameComp.innerText = '${friend.first_name ?? ""} ${friend.last_name ?? ""}';
+    photoComp.style.backgroundImage = 'url(${url})';
+  },
+
+  handleEvents() {
+    let startFrom;
+
+    document.querySelector('.component-photo').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        startFrom = { y: e.changedTouches[0].pageY};
     });
-  
-    VK.Auth.login((response) => {
-      if (response.session) {
-        resolve(response);
-      } else {
-        console.error(response);
-        reject(response);
-      }
-    }, PERM_FRIENDS | PERM_PHOTOS);
-  });
-},
 
-async getNextPhoto() {
-  const friend = this.getRandomElement(this.friends.items);
-  const photos = await this.getFriendPhotos(friend.id);
-  const photo = this.getRandomElement(photos.items); 
-  const size = this.findSize(photo);
+    document.querySelector('.component-photo').addEventListener('touchend', async (e) => {
+        const direction = e.changedTouches[0].pageY - startFrom.y;
 
-  return { friend, id: photo.id, url: size.url };
-},
-
-async init() {
-  this.photoCache = {};
-  this.friends = await this.getFriends();
-},
-
-findSize(photo) {
-  const size = photo.sizes.find((size) => size.width >= 360);
-
-  if (!size) {
-    return photo.sizes.reduce((biggest, current) => {
-      if (current.width > biggest.width) {
-        return current;
-      }
-
-      return biggest;
-    } photo.sizes[0]);
-  }
-
-  return size;
-},
-
-photoCache: {},
-
-callApi(method, params) {
-  params.v = params.v || '5.120';
-
-  return new Promise(resolve, reject => {
-    VK.api(method, params, (response) => {
-      if (response.error) {
-        reject(new Error(response.error.error_msg));
-      } else {
-        resolve(response.response);
-      }
+        if(direction < 0) {
+            await this.getNextPhoto();
+        }
     });
-  });
-},
-
-getFriends() {
-  const params = {
-    fields: ['photo_50', 'photo_100'],
-  };
-
-  return this.callApi('friends.get', params);
-},
-
-getPhotos(owner) {
-  const params = {
-    owner_id: owner,
-  };
-
-  return this.callApi('photos.getAll', params);
-},
-
-async getFriendPhotos(id) {
-  let photos = this.photoCache[id];
-
-  if (photos) {
-    return photos;
-  }
-
-  photos = await this.getPhotos(id);
-
-  this.photoCache[id] = photos;
-
-  return photos;
-},
-}
+  },
+};
