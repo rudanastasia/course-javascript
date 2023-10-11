@@ -60,9 +60,19 @@ module.exports = {
         loader: 'babel-loader',
         options: { cacheDirectory: true },
       },
-      {
+      /*{
         test: /projects\/.+\.html$/,
         use: [{ loader: './scripts/html-inject-loader.js' }, { loader: 'html-loader' }],
+      },*/
+      {
+        test: /\.html/,
+        include: [path.resolve(__dirname, 'projects')],
+        use: [
+          { loader: './scripts/html-inject-loader.js' },
+          {
+            loader: 'raw-loader',
+          }
+        ],
       },
       {
         test: /\.(jpe?g|png|gif|svg|eot|ttf|woff|woff2)$/i,
@@ -91,5 +101,9 @@ module.exports = {
       filename: '[name].css',
     }),
     ...htmlPlugins,
+    /*new HtmlPlugin({
+      template: path.join(__dirname, 'src', 'template.html'),
+      filename: 'index.html',
+    }),*/
   ],
 };
