@@ -1,8 +1,17 @@
 const PERM_FRIENDS = 2;
 const PERM_PHOTOS = 4;
-const APP_ID = 138184625;
+const APP_ID = 51772259;
 
 export default {
+  getRandomElement(array) {
+    if(!array.length){
+      return null;
+    }
+
+    const index = Math.round(Math.random() * (array.length -1));
+
+    return array[index];
+  }
 
 login() {
   return new Promise((resolve, reject) => {
@@ -56,7 +65,7 @@ photoCache: {},
 callApi(method, params) {
   params.v = params.v || '5.120';
 
-  return new Promise(resolve, reject => {
+  return new Promise((resolve, reject) => {
     VK.api(method, params, (response) => {
       if (response.error) {
         reject(new Error(response.error.error_msg));
