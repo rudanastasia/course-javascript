@@ -11,7 +11,7 @@ export default {
     const index = Math.round(Math.random() * (array.length -1));
 
     return array[index];
-  }
+  },
 
 login() {
   return new Promise((resolve, reject) => {
