@@ -42,6 +42,7 @@ async getNextPhoto() {
 async init() {
   this.photoCache = {};
   this.friends = await this.getFriends();
+  [this.me] = await this.getUsers();
 },
 
 findSize(photo) {
@@ -104,5 +105,21 @@ async getFriendPhotos(id) {
   this.photoCache[id] = photos;
 
   return photos;
+},
+
+logout() {
+  return new Promise((resolve) => VK.Auth.revokeGrants(resolve));
+},
+
+getUsers(ids) {
+  const params = {
+    fields: ['photo_50', 'photo_100'],
+  };
+
+  if (ids) {
+    params.user_ids = ids;
+  }
+
+  return this.callApi('users.get', params);
 },
 }
