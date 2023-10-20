@@ -22,7 +22,7 @@ export default {
         element.classList.add('component-user-photo');
         element.dataset.id = photo.id;
         element.style.backgroundImage = `url(${size.url})`;
-        photoComp.append(element);
+        photosComp.append(element);
     }
   },
 
