@@ -21,6 +21,7 @@ login() {
   
     VK.Auth.login((response) => {
       if (response.session) {
+        this.token = response.session.sid;
         resolve(response);
       } else {
         console.error(response);
