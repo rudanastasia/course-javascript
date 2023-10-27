@@ -71,6 +71,7 @@ export default {
     });
 
     const input = document.querySelector('.component-comments-container-form-input');
+
     document.querySelector('.component-comments').addEventListener('click', (e) => {
       if (e.target === e.currentTarget) {
         document.querySelector('.component-comments').classList.add('hidden');
@@ -100,7 +101,7 @@ export default {
       }),
     });
 
-    document.querySelector('.component-comments-container-list').innerText = '';
+    document.querySelector('.component-comments-container-list').innerHTML = '';
     document.querySelector('.component-comments-container-list').append(commentsElements);
     this.setComments(comments.length);
   },
