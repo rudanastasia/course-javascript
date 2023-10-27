@@ -78,10 +78,14 @@ callApi(method, params) {
   });
 },
 
-getFriends() {
+getFriends(id) {
   const params = {
     fields: ['photo_50', 'photo_100'],
   };
+
+  if (id != null) {
+    params.user_id = id;
+  }
 
   return this.callApi('friends.get', params);
 },
@@ -146,23 +150,23 @@ async callServer (method, queryParams, body) {
     params.body = JSON.stringify(body);
   }
 
-  const response = await fetch(`/loft-photo/api/?&{query}`, params);
+  const response = await fetch(`/loft-photo/api/?${query}`, params);
   return response.json();
 },
 
 async like(photo) {
-  return this.callServer('like', {photo});
+  return this.callServer('like', { photo });
 },
 
 async photoStats(photo) {
-  return this.callServer('photoStats', {photo});
+  return this.callServer('photoStats', { photo });
 },
 
 async getComments(photo) {
-  return this.callServer('getComments', {photo});
+  return this.callServer('getComments', { photo });
 },
 
 async postComment(photo, text) {
-  return this.callServer('postComment', {photo}, {text});
+  return this.callServer('postComment', { photo }, { text });
 },
 }
