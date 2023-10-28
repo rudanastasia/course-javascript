@@ -73,7 +73,7 @@ module.exports = {
             loader: 'raw-loader',
           }
         ],
-      }*/
+      },*/
       {
         test: /\.(jpe?g|png|gif|svg|eot|ttf|woff|woff2)$/i,
         type: 'asset/resource',
@@ -101,9 +101,5 @@ module.exports = {
       filename: '[name].css',
     }),
     ...htmlPlugins,
-    /*new HtmlPlugin({
-      template: path.join(__dirname, 'src', 'template.html'),
-      filename: 'index.html',
-    }),*/
   ],
 };
