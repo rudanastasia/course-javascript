@@ -11,7 +11,7 @@ const DB = {
 const methods = {
   like(req, res, url, vkUser) {
     const photoId = url.searchParams.get('photo');
-    const photoLikes = DB.likes.get(photoId);
+    let photoLikes = DB.likes.get(photoId);
 
     if (!photoLikes) {
       photoLikes = new Map();
